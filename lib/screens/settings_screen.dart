@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:preferences_app/providers/theme_provider.dart';
 import 'package:preferences_app/share_preferences/preferences.dart';
+import 'package:provider/provider.dart';
 
 import '../widgets/side_menu.dart';
 
@@ -40,6 +42,12 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   title: const Text('Darkmode'),
                   onChanged: (value) {
                     Preferences.isDarkmode = value;
+                    // Esto permite llamar al provider a la hora de clic en el switch y actualizaqr la vista en tiempo real con el theme
+                    final themeProvider =
+                        Provider.of<ThemeProvider>(context, listen: false);
+                    value
+                        ? themeProvider.setDarkMode()
+                        : themeProvider.setLightMode();
                     setState(() {});
                   }),
               const Divider(),
