@@ -1,7 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:preferences_app/screens/screens.dart';
+import 'package:preferences_app/share_preferences/preferences.dart';
 
-void main() => runApp(const MyApp());
+void main() async {
+  // Esta línea garantiza la iniciualización de todos los widgets para evitar el crash de 'SharedPreferences.getInstance()'
+  WidgetsFlutterBinding.ensureInitialized();
+  // De esta forma haciendo el main async, se puede inicializar las Preferences
+  await Preferences.init();
+
+  runApp(const MyApp());
+}
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -16,6 +24,7 @@ class MyApp extends StatelessWidget {
         HomeScreen.routerName: (_) => const HomeScreen(),
         SettingsScreen.routerName: (_) => const SettingsScreen()
       },
+      theme: Preferences.isDarkmode ? ThemeData.dark() : ThemeData.light(),
     );
   }
 }
